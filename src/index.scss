@@ -1,0 +1,145 @@
+@import "assets/styles/scss/fonts";
+@import "assets/styles/scss/variables";
+@import "assets/styles/scss/mixins";
+@import "assets/styles/scss/_portlet";
+@import "assets/styles/scss/nav";
+@import "assets/styles/scss/header";
+@import "assets/styles/scss/pagination";
+@import "~bootstrap/scss/bootstrap";
+
+html, body {
+  margin: 0;
+  font-family: Cerebri Sans;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: $bg-color;
+  color: $text-dark;
+
+}
+.text{
+  color: $text-dark;
+  font-size: 12px;
+}
+.secondary-text{
+  @extend .text-grey;
+  font-size: 12px;
+}
+.text-bold{
+  font-weight: 600;
+}
+.text-bolder{
+  font-weight: 900;
+}
+.text-red{
+  color: $red;
+  svg{
+    fill: currentColor;
+  }
+}
+.text-light-red{
+  color: $red-light;
+  svg{
+    fill: currentColor;
+  }
+}
+.text-blue{
+  color: $primary
+}
+.text-purple{
+  color: $purple
+}
+.text-grey{
+  color: $text-light;
+  svg{
+    fill: currentColor;
+  }
+}
+
+
+//Scrollbar
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: $blue-light !important;
+  border-radius: 5px;
+  //width: 10px;
+  //max-width: 10px;
+  border: 1px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-track {
+  background: $grey;
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: $blue-light !important;
+}
+
+.footer{
+  width: 100%;
+  height: 80px;
+  background-color: $white;
+  z-index: 99;
+  border-left: 2px solid $body-color;
+}
+.border-radius{
+  border-radius: 10px;
+}
+.border-top-right-radius{
+  border-top-right-radius: 10px;
+}
+.border-top-left-radius{
+  border-top-left-radius: 10px;
+}
+.border-bottom-right-radius{
+  border-bottom-right-radius: 10px;
+}
+.border-bottom-left-radius{
+  border-bottom-left-radius: 10px;
+}
+
+.separator-vertical{
+  width: 1px;
+  background-color: $separator;
+}
+
+button{
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
+.border-bottom{
+  border-bottom:  1px solid $separator !important;
+}
+.bg-grey{
+  background-color: $grey;
+}
+.bg-purple{
+  background-color: $purple;
+}
+.bg-purple-light{
+  background-color: $purple-light;
+}
+.bg-blue{
+  background-color: $primary;
+}
+.bg-orange{
+  background-color: $orange-light;
+}
+a{
+
+  color: inherit;
+  &:hover{
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+//modal
+.modal-content{
+  border-radius: 10px;
+  border: none;
+  @include shadow-dark()
+}

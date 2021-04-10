@@ -1,0 +1,50 @@
+@import "../variables";
+@import "../mixins";
+
+.dashboard-stats{
+  display: grid;
+  grid-template-columns: repeat(4,auto);
+  grid-gap: 20px;
+  @include media-breakpoint-down(md){
+    grid-template-columns: repeat(2, auto) ;
+    .dashboard-stats__item{
+      justify-content: flex-start;
+
+    }
+    div:nth-child(2n + 0){
+      &:after{
+        content: none;
+      }
+    }
+  };
+  @include media-breakpoint-down(sm){
+    grid-template-columns: repeat(1,auto) ;
+    div {
+      &:after {
+        content: none;
+      }
+    }
+  }
+  div:last-child{
+    &:after{
+      content: none;
+    }
+  }
+}
+.dashboard-stats__item{
+  display: flex;
+  position: relative;
+  //& > div{
+  //  margin-left: 10px;
+  //}
+  justify-content: center;
+  &:after{
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    background: $separator;
+  }
+}

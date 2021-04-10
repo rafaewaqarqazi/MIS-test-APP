@@ -1,0 +1,66 @@
+@import "variables";
+@import "mixins";
+.menu-toggle{
+  background-color: transparent !important;
+  border: none !important;
+  font-size: 12px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  &:active,&:focus{
+    box-shadow: none !important;
+  }
+  color: $text-dark !important;
+
+  &:focus{
+    outline: none;
+  }
+  //height: 30px;
+  border-radius: 10px;
+  //&:hover{
+  //  background-color: darken($border-color, 4%) !important;
+  //}
+}
+//.menu-toggle-border{
+//  @extend .menu-toggle;
+//  border: 1px solid $form-input-border !important;
+//  background-color: $white !important;
+//}
+.carrot-none{
+  &:after{
+    content: none !important;
+  }
+}
+.menu-dropdown{
+  border: 0 !important;
+  padding: 0.25rem 1.5rem !important;
+  @include shadow();
+  border-radius: 10px;
+  .dropdown-item{
+    padding: 0.75rem 0 !important;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    color: $text-dark !important;
+    font-size: 12px;
+    &:active{
+      background-color: $white !important;
+      border-color: $white !important;
+    }
+    &:focus{
+      box-shadow: none !important;
+    }
+    //i{
+    //  font-size: 15px;
+    //  display: flex;
+    //  color: $input-color-light-grey;
+    //}
+    //svg{
+    //  fill: $input-color-light-grey;
+    //}
+    &:hover{
+      background-color: $white !important;
+    }
+  }
+}

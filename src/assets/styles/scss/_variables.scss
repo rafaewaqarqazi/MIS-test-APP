@@ -1,0 +1,30 @@
+$white: #fff;
+$body-color : #fafafa;
+$bg-color : #f9f9f9;
+$grey: #eceff5;
+$primary : #0661ff;
+$success: #00e183;
+$shadow-color: #eceff5;
+$shadow-color-dark: #7d7d7d;
+
+$text-dark: #333333;
+$text-light: #a1afcb;
+$input-placeholder-color: #858585;
+
+$separator: #e9ecf3;
+$border-dark: #d2ddf3;
+
+$red-light: #ff9e9e;
+$red: #fc5555;
+$purple-light: #ac9eff;
+$orange-light: #ffc19e;
+$blue-light: #92c9fb;
+
+
+$grid-breakpoints: (
+        xs: 0,
+        sm: 576px,
+        md: 768px,
+        lg: 992px,
+        xl: 1200px
+) !default;

@@ -1,0 +1,29 @@
+.portlet{
+    background: $white;
+    border-radius: 10px;
+    @include shadow();
+}
+.portlet__header{
+    display: flex;
+    align-items: center;
+    padding: 30px;
+}
+.portlet__title{
+    font-weight: bold;
+    color: $text-dark;
+    font-size: 18px;
+    flex-grow: 1;
+}
+.portlet__body{
+    padding: 30px;
+    height: 100%;
+}
+.portlet__body-bg{
+    @extend .portlet__body;
+    background-color: $body-color;
+}
+.portlet__title-light{
+    @extend .portlet__title;
+    font-weight: normal;
+}
+
