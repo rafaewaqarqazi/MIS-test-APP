@@ -1,13 +1,17 @@
-import React from 'react';
-import { ErrorMessage, useField } from 'formik';
-import Proptypes from 'prop-types';
-import { Dropdown } from 'react-bootstrap';
-import AngleDownIcon from '../svgIcons/AngleDownIcon';
-import { formErrorMessage } from './FormErrorMessage';
+import React from "react";
+import { ErrorMessage, useField } from "formik";
+import Proptypes from "prop-types";
+import { Dropdown } from "react-bootstrap";
+import { formErrorMessage } from "./FormErrorMessage";
+import AngleDownIcon from "../svg-icons/AngleDownIcon";
 
-const FormikDropdown = ({ name, options, toggleClassName = 'dropdown-bg' }) => {
+const FormikDropdown = ({
+  name,
+  options,
+  toggleClassName = "menu-toggle carrot-none w-100",
+}) => {
   const [, { value }, { setValue }] = useField(name);
-  const onClick = newValue => () => {
+  const onClick = (newValue) => () => {
     setValue(newValue);
   };
   return (
@@ -16,18 +20,17 @@ const FormikDropdown = ({ name, options, toggleClassName = 'dropdown-bg' }) => {
         <Dropdown.Toggle className={toggleClassName}>
           <div className="d-flex align-items-center center  w-100">
             <span className="flex-grow-1 text-left text-capitalize">
-              {value || 'Select'}
+              {value
+                ? options.filter((opt) => opt.value === value)[0].title
+                : "Select Vital"}
             </span>
             <AngleDownIcon size="11px" />
           </div>
         </Dropdown.Toggle>
-        <Dropdown.Menu className="menu-dropdown shadow-lg w-100">
-          {options.map(option => (
-            <Dropdown.Item
-              onClick={onClick(option.value || option.label)}
-              key={option.value || option.label}
-            >
-              {option.title || option.label}
+        <Dropdown.Menu className="menu-dropdown">
+          {options.map((option) => (
+            <Dropdown.Item onClick={onClick(option.value)} key={option.value}>
+              {option.title}
             </Dropdown.Item>
           ))}
         </Dropdown.Menu>

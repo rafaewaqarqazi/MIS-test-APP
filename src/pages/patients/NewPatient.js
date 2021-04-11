@@ -9,10 +9,13 @@ import StyledButton from "../../components/styledComponents/StyledButton";
 import Header from "../../components/header/Header";
 import {
   createPatient,
+  createVital,
   getPatientById,
   updatePatient,
 } from "../../utils/crud/patient.crud";
-import { Alert } from "react-bootstrap";
+import { Alert, Table } from "react-bootstrap";
+import FormikDropdown from "../../components/FormikComponents/FormikDropdown";
+import moment from "moment";
 const NewPatient = () => {
   const history = useHistory();
   const [data, setData] = useState(null);
@@ -20,23 +23,47 @@ const NewPatient = () => {
   const params = useParams();
   console.log({ params });
   useEffect(() => {
-    if (params.id)
-      getPatientById({ id: params.id })
-        .then((res) => {
-          setData(res.data.patient);
-        })
-        .catch((error) => {
-          console.log({ error: error.message });
-        });
+    if (params.id) getData();
   }, [params.id]);
-  const [loading, setLoading] = useState(false);
+  const getData = () => {
+    getPatientById({ id: params.id })
+      .then((res) => {
+        setData(res.data.patient);
+      })
+      .catch((error) => {
+        console.log({ error: error.message });
+      });
+  };
+  const [loading, setLoading] = useState({ data: false, vital: false });
+  const enableLoading = (name) => {
+    setLoading((prevState) => ({ ...prevState, [name]: true }));
+  };
+  const disableLoading = (name) => {
+    setLoading((prevState) => ({ ...prevState, [name]: false }));
+  };
+  const vitals = [
+    {
+      value: 1,
+      title: "Weight",
+    },
+    {
+      value: 2,
+      title: "Height",
+    },
+    {
+      value: 3,
+      title: "Temperature",
+    },
+  ];
   return (
     <PortletBody withBg className="border-top-right-radius">
       <Header title="New Patient" />
       <div className="row ">
-        <div className="col-4 mx-auto  mt-5">
+        <div className="col-4 offset-4  mt-5">
           <Portlet>
-            <PortletHeader title="Create New Patient" />
+            <PortletHeader
+              title={data ? "Update Patient" : "Create New Patient"}
+            />
             <Formik
               initialValues={
                 data || {
@@ -72,7 +99,7 @@ const NewPatient = () => {
                 return errors;
               }}
               onSubmit={(values) => {
-                setLoading(true);
+                enableLoading("data");
                 const call = data ? updatePatient : createPatient;
                 call({ patient: values })
                   .then(() => {
@@ -82,7 +109,7 @@ const NewPatient = () => {
                     }, 500);
                   })
                   .catch((error) => {
-                    setLoading(false);
+                    disableLoading("data");
                     setError({
                       show: true,
                       message:
@@ -127,34 +154,7 @@ const NewPatient = () => {
                         className="w-100"
                       />
                     </div>
-                    {data && (
-                      <>
-                        <div className=" form-group">
-                          <FormikInputField
-                            placeholder="Weight*"
-                            name="weight"
-                            type="number"
-                            className="w-100"
-                          />
-                        </div>
-                        <div className=" form-group">
-                          <FormikInputField
-                            placeholder="Height*"
-                            name="height"
-                            type="number"
-                            className="w-100"
-                          />
-                        </div>
-                        <div className=" form-group">
-                          <FormikInputField
-                            placeholder="Temperature*"
-                            name="temperature"
-                            type="number"
-                            className="w-100"
-                          />
-                        </div>
-                      </>
-                    )}
+
                     <div className=" form-group">
                       <FormikInputField
                         placeholder="Email*"
@@ -186,8 +186,8 @@ const NewPatient = () => {
                   <PortletBody className="d-flex pt-0 align-items-center justify-content-end">
                     <StyledButton
                       type="submit"
-                      loading={loading}
-                      disabled={loading}
+                      loading={loading.data}
+                      disabled={loading.data}
                     >
                       {data ? "Update" : "Create"} Patient
                     </StyledButton>
@@ -197,6 +197,124 @@ const NewPatient = () => {
             </Formik>
           </Portlet>
         </div>
+        {data && (
+          <div className="col-4   mt-5">
+            <Portlet>
+              <PortletHeader title="Patient's Vitals" />
+              <Formik
+                initialValues={{
+                  vital_id: "",
+                  value: "",
+                }}
+                enableReinitialize
+                validate={(values) => {
+                  const errors = {};
+
+                  if (!values.vital_id) {
+                    errors.vital_id = "Required!";
+                  }
+                  if (!values.value) {
+                    errors.value = "Required!";
+                  }
+                  return errors;
+                }}
+                onSubmit={(values) => {
+                  enableLoading("vital");
+                  console.log({ values, data });
+                  createVital({ ...values, mrno: data.mrno })
+                    .then(() => {
+                      setTimeout(() => {
+                        disableLoading("vital");
+                        getData();
+                      }, 500);
+                    })
+                    .catch((error) => {
+                      disableLoading("vital");
+                    });
+                }}
+              >
+                {({ handleSubmit }) => (
+                  <Form onSubmit={handleSubmit}>
+                    <PortletBody className="py-0">
+                      <Alert
+                        show={error.show}
+                        onClose={() => setError({ show: false, message: "" })}
+                        variant="danger"
+                        dismissible
+                      >
+                        {error.message}
+                      </Alert>
+                      <div className=" form-group">
+                        <FormikDropdown name="vital_id" options={vitals} />
+                      </div>
+                      <div className=" form-group">
+                        <FormikInputField
+                          placeholder="Value*"
+                          required
+                          name="value"
+                          className="w-100"
+                          type="number"
+                        />
+                      </div>
+                    </PortletBody>
+
+                    <PortletBody className="d-flex pt-0 align-items-center justify-content-end">
+                      <StyledButton
+                        type="submit"
+                        loading={loading.vital}
+                        disabled={loading.vital}
+                      >
+                        Create Vital
+                      </StyledButton>
+                    </PortletBody>
+                  </Form>
+                )}
+              </Formik>
+              <PortletBody>
+                <Table responsive striped borderless>
+                  <thead>
+                    <th className="text">Id</th>
+                    <th className="text">MrNo</th>
+                    <th className="text">Vital</th>
+                    <th className="text">Value</th>
+                    <th className="text">Created At</th>
+                  </thead>
+                  <tbody>
+                    {data?.patient_vitals?.length === 0 ? (
+                      <tr>
+                        <td
+                          colSpan={4}
+                          className={"text-center secondary-text"}
+                        >
+                          No Record Found!
+                        </td>
+                      </tr>
+                    ) : (
+                      data?.patient_vitals.map((vital, i) => (
+                        <tr key={i}>
+                          <td className="text">{vital.id}</td>
+                          <td className="text">{vital.mrno}</td>
+                          <td className="text">
+                            {" "}
+                            {
+                              vitals.filter(
+                                (v) => v.value === vital.vital_id
+                              )[0].title
+                            }
+                          </td>
+                          <td className="text">{vital.value}</td>
+                          <td className="text">
+                            {moment(vital.createdAt).fromNow()}
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </Table>
+              </PortletBody>
+            </Portlet>
+          </div>
+        )}
       </div>
     </PortletBody>
   );

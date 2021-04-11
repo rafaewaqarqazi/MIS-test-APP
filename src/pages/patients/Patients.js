@@ -133,11 +133,15 @@ const Patients = () => {
                       <span className="mr-2">MrNO:</span>
                       <span>{patient.mrno}</span>
                     </div>
+                    <div className="secondary-text mr-4">
+                      <span className="mr-2">No of Vitals:</span>
+                      <span>{patient.patient_vitals?.length || 0}</span>
+                    </div>
                   </div>
                 </div>
 
                 <div className="d-flex align-items-center">
-                  <Link to={`/edit/${patient.id}`} className="text-grey">
+                  <Link to={`/edit/${patient.mrno}`} className="text-grey">
                     <EditIcon />
                   </Link>
                   <button
